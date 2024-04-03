@@ -3,6 +3,8 @@ package com.example.forum.service;
 import com.example.forum.model.Message;
 import com.example.forum.repository.MessageRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -14,8 +16,8 @@ import java.util.List;
 public class MessageService {
     private final MessageRepository messageRepository;
 
-    public List<Message> getMessagesByTopicId(Long topicId) {
-        return messageRepository.findByTopicId(topicId);
+    public Page<Message> getMessagesByTopicId(Long topicId, Pageable pageable) {
+        return messageRepository.findByTopicId(topicId, pageable);
     }
 
     public Message createMessage(Message message) {
@@ -36,6 +38,6 @@ public class MessageService {
 
     private Message getMessageById(Long id) {
         return messageRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Message not found with id " + id));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Сообщение с данным id не найдено " + id));
     }
 }
